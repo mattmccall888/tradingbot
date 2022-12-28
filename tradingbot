@@ -1,0 +1,12 @@
+import requests
+import robin_stocks.robinhood as rs
+from datetime import timedelta, datetime
+import time
+from time import sleep
+
+#robinhood Auth
+username = 'mattbear888@gmail.com'
+password= 'Angel$@123456'
+login = rs.login(username,password)
+
+

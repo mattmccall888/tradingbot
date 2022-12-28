@@ -1,12 +1,22 @@
 import requests
+import os
+import pandas as pd
 import robin_stocks.robinhood as rs
 from datetime import timedelta, datetime
 import time
 from time import sleep
 
 #robinhood Auth
-username = ''
-password= ''
+username = os.environ.get('Robinhood Username')
+password= os.environ.get('Robinhood Password')
 login = rs.login(username,password)
 
 
+
+dropbox_data = rs.stocks.get_stock_historicals("DBX", interval="day", span="week")
+dropbox_historical = pd.DataFrame(dropbox_data)
+
+box_data = rs.stocks.get_stock_historicals("BOX", interval="day", span="week")
+box_historical = pd.DataFrame(box_data)
+
+print(dropbox_data)

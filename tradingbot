@@ -14,8 +14,8 @@ robinpass= os.environ.get("robinhood_password")
 
 #Robinhood login
 def login():
-    rs.login(username="mattbear888@gmail.com",
-         password="Angel$@123456",
+    rs.login(username="",
+         password="",
          expiresIn=86400,
          by_sms=True)
 

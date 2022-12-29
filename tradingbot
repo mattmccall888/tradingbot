@@ -5,7 +5,7 @@ from datetime import timedelta, datetime
 import datetime as dt
 import time
 from time import sleep
-import tradingstrategy
+import tradinghelpers
 
 #Fetch User and Pass
 
@@ -55,7 +55,7 @@ while market_open():
 
     break
 
-ts = tradingstrategy.rsicheck(stocks)
+ts = tradinghelpers.rsicheck(stocks)
 print(ts)
 
 

@@ -52,7 +52,10 @@ while market_open():
         price = float(prices[i])
         print('{} = ${}'.format(stock,price))
 
-    time.sleep(15)
+    break
+
+ts = tradingstrategy.spreadcriteriacheck(stocks)
+print(ts)
 
 
 

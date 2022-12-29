@@ -7,12 +7,5 @@ def spreadcriteriacheck(stocks):
     goodstocks = []
     stocks = stocks
     for i in stocks:
-        
-        
-
-
-
-
-
-
-
+        print(rs.robinhood.stocks.get_earnings(i))
+    

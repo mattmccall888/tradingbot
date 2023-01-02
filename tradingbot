@@ -55,8 +55,11 @@ while market_open():
 
     break
 
-ts = tradinghelpers.rsicheck(stocks)
-print(ts)
+test1 = tradinghelpers.rsicheck(stocks)
+print(test1)
+test2 = tradinghelpers.macdcheck(stocks)
+print(test2)
+
 
 
 

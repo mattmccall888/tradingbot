@@ -6,6 +6,7 @@ import datetime as dt
 import time
 from time import sleep
 import tradinghelpers
+import yfinance as yf
 
 #Fetch User and Pass
 
@@ -24,9 +25,7 @@ def logout():
     rs.authentication.logout()
 
 def get_stocks():
-    stocks = list()
-    stocks.append('NVDA')
-    stocks.append('TSLA')
+    stocks = ['NVDA', 'TSLA']
     return (stocks)
 
 def market_open():
@@ -55,12 +54,13 @@ while market_open():
 
     break
 
-test1 = tradinghelpers.rsicheck(stocks)
-print(test1)
-test2 = tradinghelpers.macdcheck(stocks)
-print(test2)
-test3 = pd.merge(test1, test2, on="Ticker")
-print(test3)
+RSI = tradinghelpers.rsigetter(stocks)
+MACD = tradinghelpers.macdgetter(stocks)
+VOLUME = tradinghelpers.volumeGetter(stocks)
+MergedFrame = pd.merge(pd.merge(RSI, MACD, on="Ticker"),VOLUME,on="Ticker")
+print(MergedFrame)
+
+
 
 
 

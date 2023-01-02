@@ -4,13 +4,14 @@ import robin_stocks.helper as helper
 import robin_stocks.urls as url
 from datetime import timedelta, datetime
 import datetime as dt
-from pyrh import Robinhood
 from datetime import datetime
 import numpy as np
 import yfinance as yf
 import matplotlib.pyplot as plt
 import sched
-import pandas_ta as pdta
+import pandas_ta as pdt
+from yahoo_fin.stock_info import get_data
+import yahoo_fin.stock_info as si
 
 #Global Params for checks
 enteredTrade = False
@@ -20,7 +21,7 @@ macdPeriod = "1y"
 macdInterval = "1d"
 
 
-def rsicheck(stocks):
+def rsigetter(stocks):
     global rsiPeriod
     global rsiInterval
     finalframe = pd.DataFrame()
@@ -90,7 +91,7 @@ def rsicheck(stocks):
     return(finalframe)
 
 
-def macdcheck(stocks):
+def macdgetter(stocks):
     global macdPeriod
     global macdInterval
     stocklist = []
@@ -125,13 +126,18 @@ def macdcheck(stocks):
     macdhlist = pd.Series(templist1_3, name="MACD-H") #difference between them, at 0 indicates a crossover
     stockseries = pd.Series(stocklist, name="Ticker")
     finalframe = pd.concat([stockseries, macdlist, macdslist, macdhlist], axis=1)
-    for i in stocks:
-        finalframe
-    
     return(finalframe)
     
-#def nextFunction():
-
-        
-    
-    
+def volumeGetter(stocks):
+    volumelist = []
+    stocklist = []
+    finalframe = pd.DataFrame()
+    for i in stocks:
+        stocklist.append(i)
+        currticker = yf.Ticker(i)
+        currVol = (currticker.info["averageVolume10days"])
+        volumelist = volumelist + [currVol]
+    volumeseries = pd.Series(volumelist, name = "Volume")
+    stockseries = pd.Series(stocklist, name="Ticker")
+    finalframe = pd.concat([stockseries, volumeseries], axis=1)
+    return (finalframe)

@@ -59,6 +59,8 @@ test1 = tradinghelpers.rsicheck(stocks)
 print(test1)
 test2 = tradinghelpers.macdcheck(stocks)
 print(test2)
+test3 = pd.merge(test1, test2, on="Ticker")
+print(test3)
 
 
 

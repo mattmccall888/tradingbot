@@ -23,7 +23,9 @@ macdInterval = "1d"
 def rsicheck(stocks):
     global rsiPeriod
     global rsiInterval
-    finallist = []
+    finalframe = pd.DataFrame()
+    templist = []
+    stocklist = []
     for i in stocks:
         symbol = yf.Ticker(i)
         df_stock = symbol.history(interval= rsiInterval ,period= rsiPeriod)
@@ -79,8 +81,14 @@ def rsicheck(stocks):
         ax2.axhline(70, linestyle='-', linewidth=1.5, color='red')
 
         #plt.show()
-        finallist.append(rsi[-1])
-    return(finallist)
+        templist.append(rsi[-1])
+        stocklist.append(i)
+
+    finalseries = pd.Series(templist, name='RSI') #Rsi values
+    stockseries = pd.Series(stocklist, name = 'Ticker') #Tickers
+    finalframe = pd.concat([stockseries, finalseries], axis=1)
+    return(finalframe)
+
 
 def macdcheck(stocks):
     global macdPeriod
@@ -122,7 +130,8 @@ def macdcheck(stocks):
     
     return(finalframe)
     
-        
+#def nextFunction():
+
         
     
     

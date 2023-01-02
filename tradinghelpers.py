@@ -50,38 +50,6 @@ def rsigetter(stocks):
         avg_down = change_down.rolling(14).mean().abs()
 
         rsi = 100 * avg_up / (avg_up + avg_down)
-
-        #print(rsi)
-
-        #Take a look at the 20 oldest datapoints
-        
-
-        # Set the theme of our chart
-        plt.style.use('fivethirtyeight')
-
-        # Make our resulting figure much bigger
-        plt.rcParams['figure.figsize'] = (20, 20)
-
-        # Create two charts on the same figure.
-        ax1 = plt.subplot2grid((10,1), (0,0), rowspan = 4, colspan = 1)
-        ax2 = plt.subplot2grid((10,1), (5,0), rowspan = 4, colspan = 1)
-
-        # First chart:
-        # Plot the closing price on the first chart
-        ax1.plot(df_stock['Close'], linewidth=2)
-        ax1.set_title(i + ' Close Price')
-
-        # Second chart
-        # Plot the RSI
-        ax2.set_title('Relative Strength Index')
-        ax2.plot(rsi, color='orange', linewidth=1)
-        # Add two horizontal lines, signalling the buy and sell ranges.
-        # Oversold
-        ax2.axhline(30, linestyle='-', linewidth=1.5, color='green')
-        # Overbought
-        ax2.axhline(70, linestyle='-', linewidth=1.5, color='red')
-
-        #plt.show()
         templist.append(rsi[-1])
         stocklist.append(i)
 

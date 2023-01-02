@@ -85,15 +85,14 @@ def rsicheck(stocks):
 def macdcheck(stocks):
     global macdPeriod
     global macdInterval
+    stocklist = []
     templist1 = []
     templist2 = []
     templist3 = []
     templist1_1 = []
     templist1_2 = []
     templist1_3 = []
-    finalframe = pd.DataFrame({'MACD':[],
-            'MACD-S':[],
-            'MACD-H':[]})
+    finalframe = pd.DataFrame()
     for i in stocks:
         # Request historic pricing data via finance.yahoo.com API
         df = yf.Ticker(i).history(period=macdPeriod)[['Close', 'Open', 'High', 'Volume', 'Low']]
@@ -101,7 +100,7 @@ def macdcheck(stocks):
         # Calculate MACD values using the pandas_ta library
         df.ta.macd(close='close', fast=12, slow=26, signal=9, append=True)
 
-        # View result
+        # Creating Lists
         pd.set_option("display.max_columns", None)  # show all columns
         templist1 = df["MACD_12_26_9"].tolist()
         templist2 = df["MACDs_12_26_9"].tolist()
@@ -109,12 +108,17 @@ def macdcheck(stocks):
         templist1_1.append(templist1[-1])
         templist1_2.append(templist2[-1])
         templist1_3.append(templist3[-1])
+        stocklist.append(i)
 
-    macdlist = pd.Series(templist1_1) #regular line
-    macdslist = pd.Series(templist1_2) #signal line
-    macdhlist = pd.Series(templist1_3) #difference between them, at 0 indicates a crossover
-    
-    finalframe = pd.concat([macdlist, macdslist, macdhlist], ignore_index=True, )
+
+
+    macdlist = pd.Series(templist1_1, name="MACD") #regular line
+    macdslist = pd.Series(templist1_2, name="MACD-S") #signal line
+    macdhlist = pd.Series(templist1_3, name="MACD-H") #difference between them, at 0 indicates a crossover
+    stockseries = pd.Series(stocklist, name="Ticker")
+    finalframe = pd.concat([stockseries, macdlist, macdslist, macdhlist], axis=1)
+    for i in stocks:
+        finalframe
     
     return(finalframe)
     

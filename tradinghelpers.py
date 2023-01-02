@@ -141,3 +141,29 @@ def volumeGetter(stocks):
     stockseries = pd.Series(stocklist, name="Ticker")
     finalframe = pd.concat([stockseries, volumeseries], axis=1)
     return (finalframe)
+
+def highlowGetter(stocks):
+    yearhigh = []
+    yearlow = []
+    dayhigh = []
+    daylow = []
+    stocklist = []
+    finalframe = pd.DataFrame()
+    for i in stocks:
+        stocklist.append(i)
+        currticker = yf.Ticker(i)
+        curr1 = (currticker.info["fiftyTwoWeekHigh"])
+        yearhigh = yearhigh + [curr1]
+        curr2 = (currticker.info["fiftyTwoWeekLow"])
+        yearlow = yearlow + [curr2]
+        curr3 = (currticker.info["dayHigh"])
+        dayhigh = dayhigh + [curr3]
+        curr4 = (currticker.info["dayLow"])
+        daylow = daylow + [curr4]
+    yearhighseries = pd.Series(yearhigh, name = "52 Week High")
+    yearlowseries = pd.Series(yearlow, name = "52 Week Low")
+    dayhighseries = pd.Series(dayhigh, name = "Day's High")
+    daylowseries = pd.Series(daylow, name = "Day's Low")
+    stockseries = pd.Series(stocklist, name="Ticker")
+    finalframe = pd.concat([stockseries, yearhighseries, yearlowseries, dayhighseries, daylowseries], axis=1)
+    return (finalframe)

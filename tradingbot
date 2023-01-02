@@ -57,18 +57,7 @@ while market_open():
 RSI = tradinghelpers.rsigetter(stocks)
 MACD = tradinghelpers.macdgetter(stocks)
 VOLUME = tradinghelpers.volumeGetter(stocks)
-MergedFrame = pd.merge(pd.merge(RSI, MACD, on="Ticker"),VOLUME,on="Ticker")
+HIGHLOW = tradinghelpers.highlowGetter(stocks)
+
+MergedFrame = RSI.merge(MACD, on="Ticker").merge(VOLUME,on="Ticker").merge(HIGHLOW, on= "Ticker")
 print(MergedFrame)
-
-
-
-
-
-
-# dropbox_data = rs.stocks.get_stock_historicals("DBX", interval="day", span="week")
-# dropbox_historical = pd.DataFrame(dropbox_data)
-
-# box_data = rs.stocks.get_stock_historicals("BOX", interval="day", span="week")
-# box_historical = pd.DataFrame(box_data)
-
-# print(dropbox_data)

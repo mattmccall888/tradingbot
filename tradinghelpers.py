@@ -10,11 +10,15 @@ import numpy as np
 import yfinance as yf
 import matplotlib.pyplot as plt
 import sched
+import pandas_ta as pdta
 
 #Global Params for checks
 enteredTrade = False
 rsiPeriod = "1y"
 rsiInterval = "1d"
+macdPeriod = "1y"
+macdInterval = "1d"
+
 
 def rsicheck(stocks):
     global rsiPeriod
@@ -77,3 +81,19 @@ def rsicheck(stocks):
         #plt.show()
         finallist.append(rsi[-1])
     return(finallist)
+
+def macdcheck(stocks):
+    global macdPeriod
+    global macdInterval
+    finallist = []
+    for i in stocks:
+        # Request historic pricing data via finance.yahoo.com API
+        df = yf.Ticker(i).history(period=macdPeriod)[['Close', 'Open', 'High', 'Volume', 'Low']]
+
+        # Calculate MACD values using the pandas_ta library
+        df.ta.macd(close='close', fast=12, slow=26, signal=9, append=True)
+
+        # View result
+        pd.set_option("display.max_columns", None)  # show all columns
+        print(df)
+    

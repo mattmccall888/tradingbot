@@ -58,6 +58,10 @@ RSI = tradinghelpers.rsigetter(stocks)
 MACD = tradinghelpers.macdgetter(stocks)
 VOLUME = tradinghelpers.volumeGetter(stocks)
 HIGHLOW = tradinghelpers.highlowGetter(stocks)
+EARNINGSDATE = tradinghelpers.earningsGetter(stocks)
 
 MergedFrame = RSI.merge(MACD, on="Ticker").merge(VOLUME,on="Ticker").merge(HIGHLOW, on= "Ticker")
 print(MergedFrame)
+
+print(EARNINGSDATE)
+

@@ -135,3 +135,18 @@ def highlowGetter(stocks):
     stockseries = pd.Series(stocklist, name="Ticker")
     finalframe = pd.concat([stockseries, yearhighseries, yearlowseries, dayhighseries, daylowseries], axis=1)
     return (finalframe)
+
+def earningsGetter(stock):
+    earningslist = []
+    stocklist = []
+    finalframe = pd.DataFrame()
+    dateframe = pd.DataFrame()
+    for i in stock:
+        stocklist.append(i)
+        currticker = yf.Ticker(i)
+        df = pd.DataFrame()
+        df[i] = currticker.earnings_dates.index
+        dateframe = pd.concat([df[i]], axis = 1)
+    #stockseries = pd.Series(stocklist, name="Ticker")
+    finalframe = pd.concat([dateframe], axis=1)
+    return (finalframe)

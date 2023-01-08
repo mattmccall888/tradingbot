@@ -59,9 +59,11 @@ MACD = tradinghelpers.macdgetter(stocks)
 VOLUME = tradinghelpers.volumeGetter(stocks)
 HIGHLOW = tradinghelpers.highlowGetter(stocks)
 EARNINGSDATE = tradinghelpers.earningsGetter(stocks)
+OPTIONSDATE = tradinghelpers.optionschainGetter(stocks)
 
-MergedFrame = RSI.merge(MACD, on="Ticker").merge(VOLUME,on="Ticker").merge(HIGHLOW, on= "Ticker")
-print(MergedFrame)
+#MergedFrame = RSI.merge(MACD, on="Ticker").merge(VOLUME,on="Ticker").merge(HIGHLOW, on= "Ticker")
+#print(MergedFrame)
 
-print(EARNINGSDATE)
+
+print (OPTIONSDATE)
 

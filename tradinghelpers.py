@@ -150,3 +150,18 @@ def earningsGetter(stock):
     #stockseries = pd.Series(stocklist, name="Ticker")
     finalframe = pd.concat([dateframe], axis=1)
     return (finalframe)
+
+def optionschainGetter(stock):
+    earningslist = []
+    stocklist = []
+    finalframe = pd.DataFrame()
+    dateframe = pd.DataFrame()
+    for i in stock:
+        stocklist.append(i)
+        currticker = yf.Ticker(i)
+        df = pd.DataFrame()
+        df[i] = currticker.options
+        dateframe = pd.concat([df[i]], axis = 1)
+    #stockseries = pd.Series(stocklist, name="Ticker")
+    finalframe = pd.concat([dateframe], axis=1)
+    return (finalframe)

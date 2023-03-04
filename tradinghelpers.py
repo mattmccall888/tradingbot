@@ -20,8 +20,34 @@ rsiInterval = "1d"
 macdPeriod = "1y"
 macdInterval = "1d"
 
+def rsigetter(stock):
+    global rsiPeriod
+    global rsiInterval
+    symbol = yf.Ticker(stock)
+    df_stock = symbol.history(interval= rsiInterval ,period= rsiPeriod)
 
-def rsigetter(stocks):
+    #print(df_stock)
+    change = df_stock["Close"].diff()
+    change.dropna(inplace=True)
+    # Create two copies of the Closing price Series
+    change_up = change.copy()
+    change_down = change.copy()
+
+    # 
+    change_up[change_up<0] = 0
+    change_down[change_down>0] = 0
+
+    # Verify that we did not make any mistakes
+    change.equals(change_up+change_down)
+
+    # Calculate the rolling average of average up and average down
+    avg_up = change_up.rolling(14).mean()
+    avg_down = change_down.rolling(14).mean().abs()
+
+    rsi = 100 * avg_up / (avg_up + avg_down)
+    return(rsi)
+    
+def listrsigetter(stocks):
     global rsiPeriod
     global rsiInterval
     finalframe = pd.DataFrame()
@@ -58,8 +84,20 @@ def rsigetter(stocks):
     finalframe = pd.concat([stockseries, finalseries], axis=1)
     return(finalframe)
 
+def macdgetter(stock):
+    global macdPeriod
+    global macdInterval
+    symbol = yf.Ticker(stock)
+    df_stock = symbol.history(interval= macdInterval ,period= macdPeriod)
 
-def macdgetter(stocks):
+    #print(df_stock)
+    df_stock.ta.macd(close='close', fast=12, slow=26, signal=9, append=True)
+    macd = df_stock["MACD_12_26_9"].tolist()
+    macds = df_stock["MACDs_12_26_9"].tolist()
+    macdh = df_stock["MACDh_12_26_9"].tolist()
+    return(macd + macds + macdh)
+
+def listmacdgetter(stocks):
     global macdPeriod
     global macdInterval
     stocklist = []

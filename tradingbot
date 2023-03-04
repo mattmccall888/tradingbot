@@ -8,6 +8,7 @@ from time import sleep
 import tradinghelpers
 import yfinance as yf
 
+stock = "NVDA"
 #Fetch User and Pass
 
 robinuser= os.environ.get("robinhood_username")
@@ -29,7 +30,7 @@ def get_stocks():
     return (stocks)
 
 def market_open():
-    market = True
+    market = False
     time_now = dt.datetime.now().time()
 
     mark_open = dt.time(8,30,0)
@@ -41,7 +42,7 @@ def market_open():
         print("Market is closed")
     return(market)
 
-login()
+#login()
 stocks = get_stocks()
 print('stocks:', stocks)
 
@@ -54,16 +55,22 @@ while market_open():
 
     break
 
-RSI = tradinghelpers.rsigetter(stocks)
-MACD = tradinghelpers.macdgetter(stocks)
-VOLUME = tradinghelpers.volumeGetter(stocks)
-HIGHLOW = tradinghelpers.highlowGetter(stocks)
-EARNINGSDATE = tradinghelpers.earningsGetter(stocks)
-OPTIONSDATE = tradinghelpers.optionschainGetter(stocks)
+RSI = tradinghelpers.rsigetter(stock)
+#RSI2 = tradinghelpers.rsigetter(stocks)
+# MACD = tradinghelpers.macdgetter(stock)
+# MACD2 = tradinghelpers.macdgetter(stocks)
+# VOLUME = tradinghelpers.volumeGetter(stock)
+# VOLUME2 = tradinghelpers.volumeGetter(stocks)
+# HIGHLOW = tradinghelpers.highlowGetter(stock)
+# HIGHLOW2 = tradinghelpers.highlowGetter(stocks)
+# EARNINGSDATE = tradinghelpers.earningsGetter(stock)
+# EARNINGSDATE2 = tradinghelpers.earningsGetter(stocks)
+# OPTIONSDATE = tradinghelpers.optionschainGetter(stock)
+# OPTIONSDATE2 = tradinghelpers.optionschainGetter(stocks)
 
-#MergedFrame = RSI.merge(MACD, on="Ticker").merge(VOLUME,on="Ticker").merge(HIGHLOW, on= "Ticker")
+#MergedFrame = RSI2.merge(MACD2, on="Ticker").merge(VOLUME2,on="Ticker").merge(HIGHLOW2, on= "Ticker")
 #print(MergedFrame)
 
 
-print (OPTIONSDATE)
+print (RSI)
 

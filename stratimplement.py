@@ -47,4 +47,26 @@ class RSIstrategy:
         
         return signals
         
-
+class MACDstrategy:
+    def __init__(self, symbol, data, macd_fast=12, macd_slow=26, macd_signal=9):
+        self.symbol = symbol
+        self.data = data
+        self.macd_fast = macd_fast
+        self.macd_slow = macd_slow
+        self.macd_signal = macd_signal
+        
+    def MACDgetter(self):
+        macd = self.data.ta.macd(fast=self.macd_fast, slow=self.macd_slow, signal=self.macd_signal)
+        return macd
+    
+    def generate_signals(self):
+        # Get the MACD values for all previous days
+        macd = self.MACDgetter()
+        
+        # Generate the buy and sell signals
+        signals = pd.DataFrame(index=self.data.index)
+        signals['positions'] = np.where(macd['MACD_12_26_9'] > macd['MACDh_12_26_9'], 1, np.where(macd['MACD_12_26_9'] < macd['MACDh_12_26_9'], -1, 0))
+        signals['positions'] = np.where(macd['MACD_12_26_9'] < macd['MACDs_12_26_9'], 1, np.where(macd['MACD_12_26_9'] > macd['MACDs_12_26_9'], -1, 0))
+        signals['positions'] = signals['positions'].diff()
+        
+        return signals

@@ -28,7 +28,7 @@ def logout():
     rs.authentication.logout()
 
 def get_stocks():
-    stocks = ['NVDA', 'TSLA']
+    stocks = ['NVDA', 'TSLA', 'SPY']
     return (stocks)
 
 def market_open():
@@ -48,26 +48,15 @@ def market_open():
 stocks = get_stocks()
 print('stocks:', stocks)
 
-while market_open():
-    prices= rs.stocks.get_latest_price(stocks, 'ask_price')
 
-    for i, stock in enumerate(stocks):
-        price = float(prices[i])
-        print('{} = ${}'.format(stock,price))
-
-    break
-
-RSI = tradinghelpers.rsigetter(stock)
+# RSI = tradinghelpers.rsigetter(stock)
 # MACD = tradinghelpers.macdgetter(stock)
 # VOLUME = tradinghelpers.volumeGetter(stock) 
 # HIGHLOW = tradinghelpers.highlowGetter(stock)
 # EARNINGSDATE = tradinghelpers.earningsGetter(stock)
 # OPTIONSDATE = tradinghelpers.optionschainGetter(stock)
 
-#MergedFrame = RSI2.merge(MACD2, on="Ticker").merge(VOLUME2,on="Ticker").merge(HIGHLOW2, on= "Ticker")
-#print(MergedFrame)
-
-stock = "NVDA"
+#Test center
 RSItrade = RSIBacktest()
 MACDtrade = MACDBacktest()
 

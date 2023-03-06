@@ -47,7 +47,6 @@ def rsigetter(stock):
     rsi = 100 * avg_up / (avg_up + avg_down)
     return(rsi)
     
-def listrsigetter(stocks):
     global rsiPeriod
     global rsiInterval
     finalframe = pd.DataFrame()
@@ -97,7 +96,6 @@ def macdgetter(stock):
     macdh = df_stock["MACDh_12_26_9"].tolist()
     return(macd + macds + macdh)
 
-def listmacdgetter(stocks):
     global macdPeriod
     global macdInterval
     stocklist = []
@@ -134,52 +132,40 @@ def listmacdgetter(stocks):
     finalframe = pd.concat([stockseries, macdlist, macdslist, macdhlist], axis=1)
     return(finalframe)
     
-def volumeGetter(stocks):
-    volumelist = []
-    stocklist = []
+def volumeGetter(stock):
+    symbol = yf.Ticker(stock)
+    currVol = (symbol.info["averageVolume10days"])
+    return(currVol)
+
+def highlowGetter(stock):
+    symbol = yf.Ticker(stock)
+    yearhigh = (symbol.info["fiftyTwoWeekHigh"])
+    yearlow = (symbol.info["fiftyTwoWeekLow"])
+    dayhigh = (symbol.info["dayHigh"])
+    daylow = (symbol.info["dayLow"])
+    return(yearhigh, yearlow, dayhigh, daylow)
+
+#Fetch last x years of earnings dates for a single ticker
+def earningsGetter(years, stock):
+    earningslist = []
+    stock = yf.Ticker(stock)
     finalframe = pd.DataFrame()
-    for i in stocks:
-        stocklist.append(i)
-        currticker = yf.Ticker(i)
-        currVol = (currticker.info["averageVolume10days"])
-        volumelist = volumelist + [currVol]
-    volumeseries = pd.Series(volumelist, name = "Volume")
-    stockseries = pd.Series(stocklist, name="Ticker")
-    finalframe = pd.concat([stockseries, volumeseries], axis=1)
+    dateframe = pd.DataFrame()
+    for i in years:
+        earningslist.append(i)
+        df = pd.DataFrame()
+        df[i] = stock.earnings_dates.index
+        dateframe = pd.concat([df[i]], axis = 1)
+    #stockseries = pd.Series(stocklist, name="Ticker")
+    finalframe = pd.concat([dateframe], axis=1)
     return (finalframe)
 
-def highlowGetter(stocks):
-    yearhigh = []
-    yearlow = []
-    dayhigh = []
-    daylow = []
-    stocklist = []
-    finalframe = pd.DataFrame()
-    for i in stocks:
-        stocklist.append(i)
-        currticker = yf.Ticker(i)
-        curr1 = (currticker.info["fiftyTwoWeekHigh"])
-        yearhigh = yearhigh + [curr1]
-        curr2 = (currticker.info["fiftyTwoWeekLow"])
-        yearlow = yearlow + [curr2]
-        curr3 = (currticker.info["dayHigh"])
-        dayhigh = dayhigh + [curr3]
-        curr4 = (currticker.info["dayLow"])
-        daylow = daylow + [curr4]
-    yearhighseries = pd.Series(yearhigh, name = "52 Week High")
-    yearlowseries = pd.Series(yearlow, name = "52 Week Low")
-    dayhighseries = pd.Series(dayhigh, name = "Day's High")
-    daylowseries = pd.Series(daylow, name = "Day's Low")
-    stockseries = pd.Series(stocklist, name="Ticker")
-    finalframe = pd.concat([stockseries, yearhighseries, yearlowseries, dayhighseries, daylowseries], axis=1)
-    return (finalframe)
-
-def earningsGetter(stock):
+def earningsGetter(stocks):
     earningslist = []
     stocklist = []
     finalframe = pd.DataFrame()
     dateframe = pd.DataFrame()
-    for i in stock:
+    for i in stocks:
         stocklist.append(i)
         currticker = yf.Ticker(i)
         df = pd.DataFrame()

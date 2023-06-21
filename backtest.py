@@ -7,20 +7,19 @@ import pandas_ta as pdt
 from stratimplement import MACDstrategy
 
 # Set the global parameters for all tests
-rsiPeriod = "1y"
-rsiInterval = "1d"
+Period = "1y"
+Interval = "1d"
 rsi_period = 14
 rsi_upper = 70
 rsi_lower = 30
-macdPeriod = "1y"
-macdInterval = "1d"
+
 
 
 class RSIBacktest:
     def rsi_backtest(self, stock):
     # Load price data for the stock from Yahoo Finance
         symbol = yf.Ticker(stock)
-        df_stock = symbol.history(interval= rsiInterval ,period= rsiPeriod)
+        df_stock = symbol.history(interval= Interval ,period= Period)
 
         # Instantiate the RSI strategy object
         rsi_strategy = RSIstrategy('AAPL', df_stock)
@@ -44,20 +43,21 @@ class RSIBacktest:
         cumulative_strategy_returns.plot(ax=ax)
         ax.set_xlabel('Date')
         ax.set_ylabel('Cumulative Strategy Returns in %')
-        ax.set_title('Backtesting RSI Strategy on ' + stock + ' RSI Period: ' + rsiPeriod + ' RSI Interval: ' + rsiInterval)
+        ax.set_title('Backtesting RSI Strategy on ' + stock + ' RSI Period: ' + Period + ' RSI Interval: ' + Interval)
         plt.show()
 
 class MACDBacktest:
     def macd_backtest(self, stock):
     # Load price data for the stock from Yahoo Finance
         symbol = yf.Ticker(stock)
-        df_stock = symbol.history(interval= macdInterval ,period= macdPeriod)
+        df_stock = symbol.history(interval= Interval ,period= Period)
 
         # Instantiate the RSI strategy object
-        macd_strategy = MACDstrategy('AAPL', df_stock)
+        macd_strategy = MACDstrategy(stock, df_stock)
+        rsi_strategy = RSIstrategy(stock, df_stock)
 
         # Generate signals
-        signals_df = macd_strategy.generate_signals()
+        signals_df = macd_strategy.generate_signals() + rsi_strategy.generate_signals()
 
         # Combine price and signal dataframes
         data_df = pd.concat([df_stock , signals_df], axis=1)
@@ -75,5 +75,5 @@ class MACDBacktest:
         cumulative_strategy_returns.plot(ax=ax)
         ax.set_xlabel('Date')
         ax.set_ylabel('Cumulative Strategy Returns in %')
-        ax.set_title('Backtesting MACD Strategy on ' + stock + ' MACD Period: ' + macdPeriod + ' MACD Interval: ' + macdInterval)
+        ax.set_title('Backtesting RSI + MACD Strategy on ' + stock + ' MACD Period: ' + Period + ' MACD Interval: ' + Interval)
         plt.show()
